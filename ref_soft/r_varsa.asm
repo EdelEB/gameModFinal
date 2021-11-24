@@ -13,6 +13,7 @@ _DATA SEGMENT
 
 ;-------------------------------------------------------
 ; ASM-only variables
+
 ;-------------------------------------------------------
  public float_1, float_particle_z_clip, float_point5	
  public float_minus_1, float_0	

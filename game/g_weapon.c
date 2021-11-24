@@ -358,8 +358,8 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	// is very jerky since you are predicted 'against' the shots.
 	VectorCopy (start, bolt->s.origin);
 	VectorCopy (start, bolt->s.old_origin);
-	vectoangles (dir, bolt->s.angles);
-	VectorScale (dir, speed, bolt->velocity);
+	vectoangles (dir, bolt->s.angles); 
+	VectorScale (dir, 0.1 , bolt->velocity); // EDEL speed -> 0.1
 	bolt->movetype = MOVETYPE_FLYMISSILE;
 	bolt->clipmask = MASK_SHOT;
 	bolt->solid = SOLID_BBOX;
