@@ -335,7 +335,6 @@ void HelpComputer (edict_t *ent)
 	gi.unicast (ent, true);
 }
 
-
 /*
 ==================
 Cmd_Help_f
@@ -355,7 +354,7 @@ void Cmd_Help_f (edict_t *ent)
 	ent->client->showinventory = false;
 	ent->client->showscores = false;
 
-	if (ent->client->showhelp && (ent->client->pers.game_helpchanged == game.helpchanged))
+	if (ent->client->showhelp )//&& (ent->client->pers.game_helpchanged == game.helpchanged))
 	{
 		ent->client->showhelp = false;
 		return;
@@ -366,8 +365,57 @@ void Cmd_Help_f (edict_t *ent)
 	HelpComputer (ent);
 }
 
+//EDEL START
+
+void EdelsHelpComputer(edict_t* ent)
+{
+	char	string[1024];
+	char* title = "Elderquake";
+	char* menu = "Help Menu";
+	char* test = "test";
+
+	// send the layout
+	Com_sprintf(string, sizeof(string),
+		"xv 32 yv 8 picn help "			// background
+		"xv 202 yv 12 string2 \"%s\" "		// skill
+		"xv 0 yv 24 cstring2 \"%s\" "		// level name
+		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+		"xv 50 yv 164 string2 \" kills     goals    secrets\" "
+		"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ",
+		title,
+		menu,
+		test,
+		test,
+		level.killed_monsters, level.total_monsters,
+		level.found_goals, level.total_goals,
+		level.found_secrets, level.total_secrets);
+
+	gi.WriteByte(svc_layout);
+	gi.WriteString(string);
+	gi.unicast(ent, true);
+}
+
+void Cmd_EdelsHelp_f(edict_t* ent)
+{
+
+	if (ent->client->showedelshelp ) //&& (ent->client->pers.game_edelshelpchanged == game.edelshelpchanged))
+	{
+		ent->client->showedelshelp = false;
+		return;
+	}
+
+	ent->client->showedelshelp = true;
+	ent->client->pers.edelshelpchanged = 0;
+	EdelsHelpComputer(ent);
+
+}
+
+//EDEL END
+
 
 //=======================================================================
+
 
 /*
 ===============

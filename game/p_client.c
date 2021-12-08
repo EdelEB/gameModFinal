@@ -109,7 +109,7 @@ void SP_info_player_start(edict_t *self)
 {
 	if (!coop->value)
 		return;
-	if(Q_stricmp(level.mapname, "security") == 0)
+	if(Q_stricmp(level.mapname, "security") == 0) // Edel checks map.name before spawn
 	{
 		// invoke one of our gross, ugly, disgusting hacks
 		self->think = SP_CreateCoopSpots;

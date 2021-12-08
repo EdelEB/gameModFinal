@@ -274,6 +274,8 @@ typedef struct
 	int			helpchanged;	// flash F1 icon if non 0, play sound
 								// and increment only if 1, 2, or 3
 
+	int			edelshelpchanged; // EDEL
+
 	gclient_t	*clients;		// [maxclients]
 
 	// can't store spawnpoint in level, because
@@ -601,6 +603,7 @@ extern	gitem_t	itemlist[];
 //
 void Cmd_Help_f (edict_t *ent);
 void Cmd_Score_f (edict_t *ent);
+void Cmd_EdelsHelp_f (edict_t* ent); // EDEL
 
 //
 // g_items.c
@@ -860,6 +863,8 @@ typedef struct
 
 	int			game_helpchanged;
 	int			helpchanged;
+	int			game_edelshelpchanged;	// Edel
+	int			edelshelpchanged;		// Edel
 
 	qboolean	spectator;			// client is a spectator
 } client_persistant_t;
@@ -891,6 +896,7 @@ struct gclient_s
 	qboolean	showscores;			// set layout stat
 	qboolean	showinventory;		// set layout stat
 	qboolean	showhelp;
+	qboolean	showedelshelp;		// EDEL
 	qboolean	showhelpicon;
 
 	int			ammo_index;

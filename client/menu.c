@@ -605,6 +605,7 @@ char *bindnames[][2] =
 {"invnext",			"next item"},
 
 {"cmd help", 		"help computer" }, 
+{"cmd edelshelp",	"edelshelp computer"}, // EDEL
 { 0, 0 }
 };
 
@@ -636,6 +637,8 @@ static menuaction_s		s_keys_inv_prev_action;
 static menuaction_s		s_keys_inv_next_action;
 
 static menuaction_s		s_keys_help_computer_action;
+static menuaction_s		edel_s_keys_help_computer_action; // EDEL
+
 
 static void M_UnbindCommand (char *command)
 {
@@ -927,6 +930,18 @@ static void Keys_MenuInit( void )
 	s_keys_help_computer_action.generic.localdata[0] = ++i;
 	s_keys_help_computer_action.generic.name	= bindnames[s_keys_help_computer_action.generic.localdata[0]][1];
 
+	// EDEL START
+
+	edel_s_keys_help_computer_action.generic.type = MTYPE_ACTION;
+	edel_s_keys_help_computer_action.generic.flags = QMF_GRAYED;
+	edel_s_keys_help_computer_action.generic.x = 0;
+	edel_s_keys_help_computer_action.generic.y = y += 9;
+	edel_s_keys_help_computer_action.generic.ownerdraw = DrawKeyBindingFunc;
+	edel_s_keys_help_computer_action.generic.localdata[0] = ++i;
+	edel_s_keys_help_computer_action.generic.name = bindnames[s_keys_inv_next_action.generic.localdata[0]][1];
+
+	// EDEL END
+
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_attack_action );
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_change_weapon_action );
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_walk_forward_action );
@@ -952,6 +967,7 @@ static void Keys_MenuInit( void )
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_inv_next_action );
 
 	Menu_AddItem( &s_keys_menu, ( void * ) &s_keys_help_computer_action );
+	Menu_AddItem(&s_keys_menu, (void*)&edel_s_keys_help_computer_action); // EDEL
 	
 	Menu_SetStatusBar( &s_keys_menu, "enter to change, backspace to clear" );
 	Menu_Center( &s_keys_menu );

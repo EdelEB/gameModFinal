@@ -151,7 +151,7 @@ static void fire_lead (edict_t *self, vec3_t start, vec3_t aimdir, int damage, i
 
 		r = crandom()*hspread;
 		u = crandom()*vspread;
-		VectorMA (start, 8192, forward, end);
+		VectorMA (start, 8192, forward, end); // EDEL : 8192 determines where the end point of the vector is 
 		VectorMA (end, r, right, end);
 		VectorMA (end, u, up, end);
 
@@ -356,17 +356,17 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	// (blaster/hyperblaster shots), the player won't be solid clipped against
 	// the object.  Right now trying to run into a firing hyperblaster
 	// is very jerky since you are predicted 'against' the shots.
-	VectorCopy (start, bolt->s.origin);
-	VectorCopy (start, bolt->s.old_origin);
+	VectorCopy (start, bolt->s.origin); // Edel no 1.75
+	VectorCopy (start, bolt->s.old_origin); // Edel no 1.75
 	vectoangles (dir, bolt->s.angles); 
-	VectorScale (dir, 0.1 , bolt->velocity); // EDEL speed -> 0.1
+	VectorScale (dir, speed/2 , bolt->velocity); // EDEL speed -> speed/2
 	bolt->movetype = MOVETYPE_FLYMISSILE;
 	bolt->clipmask = MASK_SHOT;
 	bolt->solid = SOLID_BBOX;
 	bolt->s.effects |= effect;
 	VectorClear (bolt->mins);
 	VectorClear (bolt->maxs);
-	bolt->s.modelindex = gi.modelindex ("models/objects/laser/tris.md2");
+	bolt->s.modelindex = gi.modelindex ("models/monsters/gunner/tris.md2"); // EDEL models/objects/laser/tris.md2
 	bolt->s.sound = gi.soundindex ("misc/lasfly.wav");
 	bolt->owner = self;
 	bolt->touch = blaster_touch;

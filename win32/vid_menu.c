@@ -104,7 +104,7 @@ static void BrightnessCallback( void *s )
 
 	if ( stricmp( vid_ref->string, "soft" ) == 0 )
 	{
-		float gamma = ( 0.8 - ( slider->curvalue/10.0 - 0.5 ) ) + 0.5;
+		float gamma = ( 0.8 - ( slider->curvalue/10.0 - 0.5 ) ) + 0.5; // EDEL 
 
 		Cvar_SetValue( "vid_gamma", gamma );
 	}
@@ -129,7 +129,7 @@ static void ApplyChanges( void *unused )
 	/*
 	** invert sense so greater = brighter, and scale to a range of 0.5 to 1.3
 	*/
-	gamma = ( 0.8 - ( s_brightness_slider[s_current_menu_index].curvalue/10.0 - 0.5 ) ) + 0.5;
+	gamma = ( 0.8 - ( s_brightness_slider[s_current_menu_index].curvalue/10.0 - 0.5 ) ) + 0.5; // Edel 0.5 -> 10.5
 
 	Cvar_SetValue( "vid_gamma", gamma );
 	Cvar_SetValue( "sw_stipplealpha", s_stipple_box.curvalue );

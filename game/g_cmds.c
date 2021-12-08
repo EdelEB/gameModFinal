@@ -472,6 +472,7 @@ void Cmd_Inven_f (edict_t *ent)
 
 	cl->showscores = false;
 	cl->showhelp = false;
+	cl->showedelshelp = false; // Edel
 
 	if (cl->showinventory)
 	{
@@ -665,6 +666,7 @@ void Cmd_PutAway_f (edict_t *ent)
 	ent->client->showscores = false;
 	ent->client->showhelp = false;
 	ent->client->showinventory = false;
+	ent->client->showedelshelp = false; // EDEL
 }
 
 
@@ -939,6 +941,15 @@ void ClientCommand (edict_t *ent)
 		Cmd_Help_f (ent);
 		return;
 	}
+	// EDEL START
+
+	if (Q_stricmp(cmd, "edelshelp") == 0)
+	{
+		Cmd_EdelsHelp_f(ent);
+		return;
+	}
+
+	// EDEL END
 
 	if (level.intermissiontime)
 		return;
