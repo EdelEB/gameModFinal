@@ -275,6 +275,7 @@ typedef struct
 								// and increment only if 1, 2, or 3
 
 	int			edelshelpchanged; // EDEL
+	int			espeechchanged; // EDEL
 
 	gclient_t	*clients;		// [maxclients]
 
@@ -604,6 +605,7 @@ extern	gitem_t	itemlist[];
 void Cmd_Help_f (edict_t *ent);
 void Cmd_Score_f (edict_t *ent);
 void Cmd_EdelsHelp_f (edict_t* ent); // EDEL
+void Cmd_ESpeech_f(edict_t* ent); // EDEL
 
 //
 // g_items.c
@@ -865,6 +867,8 @@ typedef struct
 	int			helpchanged;
 	int			game_edelshelpchanged;	// Edel
 	int			edelshelpchanged;		// Edel
+	int			game_espeechchanged;	// EDEL
+	int			espeechchanged;			// EDEL
 
 	qboolean	spectator;			// client is a spectator
 } client_persistant_t;
@@ -897,6 +901,7 @@ struct gclient_s
 	qboolean	showinventory;		// set layout stat
 	qboolean	showhelp;
 	qboolean	showedelshelp;		// EDEL
+	qboolean	showespeech;		// EDEL
 	qboolean	showhelpicon;
 
 	int			ammo_index;

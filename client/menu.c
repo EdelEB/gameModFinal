@@ -606,6 +606,7 @@ char *bindnames[][2] =
 
 {"cmd help", 		"help computer" }, 
 {"cmd edelshelp",	"edelshelp computer"}, // EDEL
+{"cmd espeech",	"espeech  computer"}, // EDEL
 { 0, 0 }
 };
 

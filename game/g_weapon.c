@@ -366,7 +366,7 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	bolt->s.effects |= effect;
 	VectorClear (bolt->mins);
 	VectorClear (bolt->maxs);
-	bolt->s.modelindex = gi.modelindex ("models/monsters/gunner/tris.md2"); // EDEL models/objects/laser/tris.md2
+	bolt->s.modelindex = gi.modelindex("models/objects/laser/tris.md2");
 	bolt->s.sound = gi.soundindex ("misc/lasfly.wav");
 	bolt->owner = self;
 	bolt->touch = blaster_touch;
@@ -632,7 +632,7 @@ void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed
 	rocket->s.effects |= EF_ROCKET;
 	VectorClear (rocket->mins);
 	VectorClear (rocket->maxs);
-	rocket->s.modelindex = gi.modelindex ("models/objects/rocket/tris.md2");
+	rocket->s.modelindex = gi.modelindex("models/items/c_head/tris.md2");// EDEL ("models/objects/rocket/tris.md2");
 	rocket->owner = self;
 	rocket->touch = rocket_touch;
 	rocket->nextthink = level.time + 8000/speed;
@@ -640,7 +640,7 @@ void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed
 	rocket->dmg = damage;
 	rocket->radius_dmg = radius_damage;
 	rocket->dmg_radius = damage_radius;
-	rocket->s.sound = gi.soundindex ("weapons/rockfly.wav");
+	rocket->s.sound = gi.soundindex("insane/insane10.wav"); // EDEL ("weapons/rockfly.wav");
 	rocket->classname = "rocket";
 
 	if (self->client)

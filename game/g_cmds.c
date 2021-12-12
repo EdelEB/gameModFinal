@@ -473,6 +473,7 @@ void Cmd_Inven_f (edict_t *ent)
 	cl->showscores = false;
 	cl->showhelp = false;
 	cl->showedelshelp = false; // Edel
+	cl->showespeech = false; //Edel
 
 	if (cl->showinventory)
 	{
@@ -667,6 +668,7 @@ void Cmd_PutAway_f (edict_t *ent)
 	ent->client->showhelp = false;
 	ent->client->showinventory = false;
 	ent->client->showedelshelp = false; // EDEL
+	ent->client->showespeech = false; // EDEL
 }
 
 
@@ -946,6 +948,12 @@ void ClientCommand (edict_t *ent)
 	if (Q_stricmp(cmd, "edelshelp") == 0)
 	{
 		Cmd_EdelsHelp_f(ent);
+		return;
+	}
+
+	if (Q_stricmp(cmd, "espeech") == 0)
+	{
+		Cmd_ESpeech_f(ent);
 		return;
 	}
 

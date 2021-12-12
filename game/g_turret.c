@@ -90,7 +90,7 @@ void turret_breach_fire (edict_t *self)
 	damage = 100 + random() * 50;
 	speed = 550 + 50 * skill->value;
 	fire_rocket (self->teammaster->owner, start, f, damage, speed, 150, damage);
-	gi.positioned_sound (start, self, CHAN_WEAPON, gi.soundindex("weapons/rocklf1a.wav"), 1, ATTN_NORM, 0);
+	gi.positioned_sound (start, self, CHAN_WEAPON, gi.soundindex("insane/insane10.wav"), 1, ATTN_NORM, 0); //weapons/rocklf1a.wav
 }
 
 void turret_breach_think (edict_t *self)

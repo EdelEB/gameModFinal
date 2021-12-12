@@ -1467,7 +1467,7 @@ always owned, never in the world
 		WEAP_ROCKETLAUNCHER,
 		NULL,
 		0,
-/* precache */ "models/objects/rocket/tris.md2 weapons/rockfly.wav weapons/rocklf1a.wav weapons/rocklr1b.wav models/objects/debris2/tris.md2"
+/* precache */ "models/objects/rocket/tris.md2 weapons/rockfly.wav insane/insane10.wav weapons/rocklr1b.wav models/objects/debris2/tris.md2" //EDEL weapons/rocklf1a.wav
 	},
 
 /*QUAKED weapon_hyperblaster (.3 .3 1) (-16 -16 -16) (16 16 16)

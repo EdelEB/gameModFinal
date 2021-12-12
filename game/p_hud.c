@@ -19,8 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "g_local.h"
 
-
-
 /*
 ======================================================================
 
@@ -301,6 +299,7 @@ Draw help computer.
 */
 void HelpComputer (edict_t *ent)
 {
+
 	char	string[1024];
 	char	*sk;
 
@@ -344,6 +343,7 @@ Display the current help message
 */
 void Cmd_Help_f (edict_t *ent)
 {
+
 	// this is for backwards compatability
 	if (deathmatch->value)
 	{
@@ -372,7 +372,6 @@ void EdelsHelpComputer(edict_t* ent)
 	char	string[1024];
 	char* title = "Elderquake";
 	char* menu = "Help Menu";
-	char* test = "test";
 
 	// send the layout
 	Com_sprintf(string, sizeof(string),
@@ -381,15 +380,15 @@ void EdelsHelpComputer(edict_t* ent)
 		"xv 0 yv 24 cstring2 \"%s\" "		// level name
 		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-		"xv 50 yv 164 string2 \" kills     goals    secrets\" "
-		"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ",
+		"xv 50 yv 164 string2 \" Talk     Quests    Complete\" "
+		"xv 75 yv 172 string2 \"t       %i/%i       %i/%i\" ",
 		title,
 		menu,
-		test,
-		test,
-		level.killed_monsters, level.total_monsters,
-		level.found_goals, level.total_goals,
-		level.found_secrets, level.total_secrets);
+		"Go find people to give \nyou quests.",
+		"Have fun",
+		level.killed_monsters, level.total_monsters, // EDEL quest variable here
+		//level.found_goals, level.total_goals,
+		level.found_secrets, level.total_secrets); // EDEL quests complete variable?
 
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
@@ -409,6 +408,78 @@ void Cmd_EdelsHelp_f(edict_t* ent)
 	ent->client->pers.edelshelpchanged = 0;
 	EdelsHelpComputer(ent);
 
+}
+
+void dialogue_quest_student(edict_t* ent) {
+
+}
+
+void dialogue_quest_injury(edict_t* ent) {
+
+}
+
+void dialogue_quest_tub(edict_t* ent) {
+
+}
+
+
+void ESpeechComputer(edict_t* ent)
+{
+	float x = abs(ent->s.origin[0] - 336.0);
+	float y = abs(ent->s.origin[1] + 46.0);
+
+	if (abs(x) < 70 && abs(y) < 70)
+	{
+
+	
+	
+	
+	
+	}
+
+	char	string[1024];
+	char* stage = "P1";
+	char* menu = "Student in Distress";
+	char* npc_dialogue =	"I can't do it anymore. This\n GameMod final is too much.\nPlease help me.";
+	char* player_dialogue = "1: You'll get it. Keep going.\n\
+							2: Here, just let me do it.\n\
+							3: Suffer. ";
+	// send the layout
+	Com_sprintf(string, sizeof(string),
+		"xv 32 yv 8 picn help "			// background
+		"xv 202 yv 12 string2 \"%s\" "		// skill
+		"xv 0 yv 24 cstring2 \"%s\" "		// level name
+		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+		"xv 50 yv 164 string2 \" 1 : j     2 : k     i\" ",
+		stage,
+		menu,
+		npc_dialogue,
+		player_dialogue,
+		level.killed_monsters, level.total_monsters, // EDEL quest variable here
+		//level.found_goals, level.total_goals,
+		level.found_secrets, level.total_secrets); // EDEL quests complete variable?
+
+	gi.WriteByte(svc_layout);
+	gi.WriteString(string);
+	gi.unicast(ent, true);
+}
+
+void Cmd_ESpeech_f(edict_t* ent)
+{
+
+	//gi.centerprintf(ent, "(%f %f %f)\n", ent->s.origin[0], ent->s.origin[1], ent->s.origin[2]);
+	//Com_Printf("%s\n", ent->classname);
+
+	if (ent->client->showespeech) //&& (ent->client->pers.game_edelshelpchanged == game.edelshelpchanged))
+	{
+		ent->client->showespeech = false;
+		return;
+	}
+
+	ent->client->showespeech = true;
+	ent->client->pers.espeechchanged = 0;
+	ESpeechComputer(ent);
 }
 
 //EDEL END
@@ -545,7 +616,7 @@ void G_SetStats (edict_t *ent)
 	}
 	else
 	{
-		if (ent->client->showscores || ent->client->showhelp)
+		if (ent->client->showscores || ent->client->showhelp || ent->client->showedelshelp || ent->client->showespeech) // EDEL why is this here?
 			ent->client->ps.stats[STAT_LAYOUTS] |= 1;
 		if (ent->client->showinventory && ent->client->pers.health > 0)
 			ent->client->ps.stats[STAT_LAYOUTS] |= 2;

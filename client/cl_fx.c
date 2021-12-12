@@ -332,8 +332,8 @@ void CL_ParseMuzzleFlash (void)
 		break;
 	case MZ_ROCKET:
 		dl->color[0] = 1;dl->color[1] = 0.5;dl->color[2] = 0.2;
-		S_StartSound (NULL, i, CHAN_WEAPON, S_RegisterSound("weapons/rocklf1a.wav"), volume, ATTN_NORM, 0);
-		S_StartSound (NULL, i, CHAN_AUTO,   S_RegisterSound("weapons/rocklr1b.wav"), volume, ATTN_NORM, 0.1);
+		S_StartSound (NULL, i, CHAN_WEAPON, S_RegisterSound("insane/insane10.wav"), volume, ATTN_NORM, 0);		// EDEL weapons/rocklf1a.wav
+		//S_StartSound (NULL, i, CHAN_AUTO,   S_RegisterSound("insane/insane2.wav"), volume, ATTN_NORM, 0.1);	// EDEL weapons/rocklr1b.wav
 		break;
 	case MZ_GRENADE:
 		dl->color[0] = 1;dl->color[1] = 0.5;dl->color[2] = 0;
