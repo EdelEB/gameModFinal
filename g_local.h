@@ -583,6 +583,14 @@ extern	gitem_t	itemlist[];
 //
 void Cmd_Help_f (edict_t *ent);
 void Cmd_Score_f (edict_t *ent);
+//EDEL BEGIN
+void Cmd_EdelsHelp_f(edict_t* ent);
+void Cmd_ESpeech_f(edict_t* ent);
+void ESpeech_j(edict_t* ent);
+void ESpeech_k(edict_t* ent);
+void ESpeech_l(edict_t* ent);
+//EDEL END
+
 
 //
 // g_items.c

@@ -370,25 +370,23 @@ void Cmd_Help_f (edict_t *ent)
 void EdelsHelpComputer(edict_t* ent)
 {
 	char	string[1024];
-	char* title = "Elderquake";
-	char* menu = "Help Menu";
+	char* title = "Elderquake Help Menu                  ";
 
 	// send the layout
 	Com_sprintf(string, sizeof(string),
 		"xv 32 yv 8 picn help "			// background
-		"xv 202 yv 12 string2 \"%s\" "		// skill
-		"xv 0 yv 24 cstring2 \"%s\" "		// level name
-		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
-		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-		"xv 50 yv 164 string2 \" Talk     Quests    Complete\" "
-		"xv 75 yv 172 string2 \"t       %i/%i       %i/%i\" ",
+		"xv 202 yv 12 string2 "		
+		"xv 0 yv 24 cstring2 \"%s\" "		// menu name
+		"xv 0 yv 54 cstring2 \"%s\" "		// 
+		"xv 0 yv 110 cstring2 \"%s\" "		// 
+		"xv 50 yv 164 string2 \" Quests     Active    Complete\" "
+		"xv 75 yv 172 string2 \"           %i          %i\" ",
 		title,
-		menu,
 		"Go find people to give \nyou quests.",
-		"Have fun",
-		level.killed_monsters, level.total_monsters, // EDEL quest variable here
+		"Use 't' to talk to them.",
+		level.quests.quests_open, // EDEL quest variable here
 		//level.found_goals, level.total_goals,
-		level.found_secrets, level.total_secrets); // EDEL quests complete variable?
+		level.quests.quests_done); // EDEL quests complete variable?
 
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
@@ -405,45 +403,41 @@ void Cmd_EdelsHelp_f(edict_t* ent)
 	}
 
 	ent->client->showedelshelp = true;
-	ent->client->pers.edelshelpchanged = 0;
-	EdelsHelpComputer(ent);
+ent->client->pers.edelshelpchanged = 0;
+EdelsHelpComputer(ent);
 
 }
 
-void dialogue_quest_student(edict_t* ent) {
-
-}
-
-void dialogue_quest_injury(edict_t* ent) {
-
-}
-
-void dialogue_quest_tub(edict_t* ent) {
-
-}
-
-
-void ESpeechComputer(edict_t* ent)
-{
-	float x = abs(ent->s.origin[0] - 336.0);
-	float y = abs(ent->s.origin[1] + 46.0);
-
-	if (abs(x) < 70 && abs(y) < 70)
-	{
-
-	
-	
-	
-	
-	}
-
+char* dialogue_quest_student(edict_t* ent) {
 	char	string[1024];
+
+
 	char* stage = "P1";
 	char* menu = "Student in Distress";
-	char* npc_dialogue =	"I can't do it anymore. This\n GameMod final is too much.\nPlease help me.";
-	char* player_dialogue = "1: You'll get it. Keep going.\n\
-							2: Here, just let me do it.\n\
-							3: Suffer. ";
+	int status = level.quests.student_status;
+	char* npc_dialogue;
+	char* player_dialogue;
+	
+
+	switch (status) {
+	case Q_NONE:
+		npc_dialogue = "I can't do it anymore. This\n GameMod final is too much.\nPlease help me.";
+		player_dialogue = "1: You'll get it. Keep goin.\n2: Here, just let me do it.\n3: Suffer.";
+		break;
+	case Q_HELP:
+		npc_dialogue = "That doesn't help me at all.\nGoodbye cruel world";
+		player_dialogue = "";
+		break;
+	case Q_KILL:
+		npc_dialogue = "Thank you so much. Wait, \nWhat was that. It's Kehoe!\nHe knows. Run away!!!";
+		player_dialogue = "1: I brought this on myself.";
+		break;
+	case Q_DONE:
+		npc_dialogue = "Now I can rest";
+		player_dialogue = "";
+		break;
+	}
+
 	// send the layout
 	Com_sprintf(string, sizeof(string),
 		"xv 32 yv 8 picn help "			// background
@@ -451,14 +445,137 @@ void ESpeechComputer(edict_t* ent)
 		"xv 0 yv 24 cstring2 \"%s\" "		// level name
 		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
 		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-		"xv 50 yv 164 string2 \" 1 : j     2 : k     i\" ",
+		"xv 50 yv 164 string2 \" 1 : j     2 : k     3 : l\" ",
 		stage,
 		menu,
 		npc_dialogue,
-		player_dialogue,
-		level.killed_monsters, level.total_monsters, // EDEL quest variable here
-		//level.found_goals, level.total_goals,
-		level.found_secrets, level.total_secrets); // EDEL quests complete variable?
+		player_dialogue); // EDEL quests complete variable?
+
+	return string;
+}
+
+char* dialogue_quest_injury(edict_t* ent) {
+	char	string[1024];
+	char* stage = "P1";
+	char* menu = "Injured Semeritan";
+
+	int status = level.quests.injured_status;
+	char* npc_dialogue;
+	char* player_dialogue;
+
+
+	switch (status) {
+	case Q_NONE:
+		npc_dialogue = "Ahhh, it hurts. Look what\nyou did. You and your \nstupid ship. My leg is \nbroken.";
+		player_dialogue = "1: I'll find you bandages.\n2: You should've moved.   \n3: Die peasant.           ";
+		break;
+	case Q_HELP:
+		break;
+	case Q_KILL:
+		break;
+	case Q_DONE:
+		break;
+	}
+
+	// send the layout
+	Com_sprintf(string, sizeof(string),
+		"xv 32 yv 8 picn help "			// background
+		"xv 202 yv 12 string2 \"%s\" "		// quest part?
+		"xv 0 yv 24 cstring2 \"%s\" "		// npc name
+		"xv 0 yv 54 cstring2 \"%s\" "		// npc dialogue
+		"xv 0 yv 110 cstring2 \"%s\" "		// player dialogue
+		"xv 50 yv 164 string2 \" 1 : j     2 : k     3 : l\" ",
+		stage,
+		menu,
+		npc_dialogue,
+		player_dialogue); // EDEL quests complete variable?
+
+	return string;
+}
+
+char* dialogue_quest_tub(edict_t* ent) {
+	char	string[1024];
+	char* stage = "P1";
+	char* menu = "Creepy Guy";
+
+	int status = level.quests.creep_status;
+	char* npc_dialogue;
+	char* player_dialogue;
+
+
+	switch (status) {
+	case Q_NONE:
+		npc_dialogue = "Why hello there. How about you\n join me. The water is fine.";
+		player_dialogue = "1: No thanks.         \n2: I'll go find you a friend.  \n3: Oooooo a hot tub.    ";
+		break;
+	case Q_HELP:
+		break;
+	case Q_KILL:
+		break;
+	case Q_DONE:
+		break;
+	}
+
+	
+
+	// send the layout
+	Com_sprintf(string, sizeof(string),
+		"xv 32 yv 8 picn help "			// background
+		"xv 202 yv 12 string2 \"%s\" "		// skill
+		"xv 0 yv 24 cstring2 \"%s\" "		// level name
+		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+		"xv 50 yv 164 string2 \" 1 : j     2 : k     3 : l\" ",
+		stage,
+		menu,
+		npc_dialogue,
+		player_dialogue); // EDEL quests complete variable?
+
+	return string;
+}
+
+void ESpeechComputer(edict_t* ent, char ch)
+{
+	char* string;
+
+	float x = ent->s.origin[0];
+	float y = ent->s.origin[1];
+
+	if (abs(x - 336.0) < 70 && abs(y + 46.0) < 70)
+	{
+		if (level.quests.student_status == Q_NONE) {
+			switch (ch)
+			{
+			case 'j':
+				level.quests.student_status = Q_NONE;
+				break;
+			case 'k':
+				level.quests.student_status = Q_HELP;
+				break;
+			case 'l':
+				level.quests.student_status = Q_KILL;
+				break;
+			}
+
+		}
+		else {
+			level.quests.student_status = Q_DONE;
+		}
+			
+		string = dialogue_quest_student(ent);
+	}
+	else if (abs(x + 24.0) < 70 && abs(y + 399.0) < 70)
+	{
+		string = dialogue_quest_injury(ent);
+	}
+	else if (abs(x + 606.0) < 70 && abs(y + 239.0) < 70)
+	{
+		string = dialogue_quest_tub(ent);
+	}
+	else
+	{
+		return;
+	}
 
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
@@ -479,7 +596,25 @@ void Cmd_ESpeech_f(edict_t* ent)
 
 	ent->client->showespeech = true;
 	ent->client->pers.espeechchanged = 0;
-	ESpeechComputer(ent);
+	ESpeechComputer(ent, 't');
+}
+
+void ESpeech_j(edict_t * ent) {
+	if (ent->client->showespeech) {
+		ESpeechComputer(ent, 'j');
+	}	
+}
+
+void ESpeech_k(edict_t* ent) {
+	if (ent->client->showespeech) {
+		ESpeechComputer(ent, 'k');
+	}
+}
+
+void ESpeech_l(edict_t* ent) {
+	if (ent->client->showespeech) {
+		ESpeechComputer(ent, 'l');
+	}
 }
 
 //EDEL END

@@ -956,6 +956,21 @@ void ClientCommand (edict_t *ent)
 		Cmd_ESpeech_f(ent);
 		return;
 	}
+	
+	if (Q_stricmp(cmd, "option1") == 0)
+	{
+		ESpeech_j(ent);
+	}
+
+	if (Q_stricmp(cmd, "option2") == 0)
+	{
+		ESpeech_k(ent);
+	}
+
+	if (Q_stricmp(cmd, "option3") == 0)
+	{
+		ESpeech_l(ent);
+	}
 
 	// EDEL END
 

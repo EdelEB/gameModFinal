@@ -604,9 +604,15 @@ char *bindnames[][2] =
 {"invprev",			"prev item"},
 {"invnext",			"next item"},
 
-{"cmd help", 		"help computer" }, 
-{"cmd edelshelp",	"edelshelp computer"}, // EDEL
-{"cmd espeech",	"espeech  computer"}, // EDEL
+{"cmd help", 		"help computer" },
+
+//EDEL BEGIN
+{"cmd edelshelp",	"edelshelp computer"}, 
+{"cmd espeech",		"espeech  computer"}, 
+{"cmd option1",		"espeech_j"},
+{"cmd option2",		"espeech_k"},
+{"cmd option3",		"espeech_l"},
+//EDEL END
 { 0, 0 }
 };
 

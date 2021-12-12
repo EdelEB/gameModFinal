@@ -81,6 +81,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define BODY_QUEUE_SIZE		8
 
+// EDEL Begin
+
+#define Q_NONE		0
+#define Q_HELP		1	
+#define Q_KILL		2
+#define Q_DONE		3
+
+// EDEL End
+
 typedef enum
 {
 	DAMAGE_NO,
@@ -297,6 +306,22 @@ typedef struct
 } game_locals_t;
 
 
+// EDEL BEGIN
+
+typedef struct 
+{
+
+	int student_status;
+	int creep_status;
+	int injured_status;
+
+	int	quests_open;
+	int	quests_done;
+
+}quests_status;
+
+// EDEL END
+
 //
 // this structure is cleared as each map is entered
 // it is read/written to the level.sav file for savegames
@@ -341,6 +366,9 @@ typedef struct
 	int			body_que;			// dead bodies
 
 	int			power_cubes;		// ugly necessity for coop
+
+	quests_status	quests;			// EDEL
+
 } level_locals_t;
 
 
@@ -604,8 +632,13 @@ extern	gitem_t	itemlist[];
 //
 void Cmd_Help_f (edict_t *ent);
 void Cmd_Score_f (edict_t *ent);
-void Cmd_EdelsHelp_f (edict_t* ent); // EDEL
-void Cmd_ESpeech_f(edict_t* ent); // EDEL
+//EDEL BEGIN
+void Cmd_EdelsHelp_f (edict_t* ent);
+void Cmd_ESpeech_f(edict_t* ent);
+void ESpeech_j(edict_t* ent);
+void ESpeech_k(edict_t* ent);
+void ESpeech_l(edict_t* ent);
+//EDEL END
 
 //
 // g_items.c
