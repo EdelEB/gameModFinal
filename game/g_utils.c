@@ -466,6 +466,18 @@ void G_FreeEdict (edict_t *ed)
 }
 
 
+// EDEL BEGIN
+
+void bolt_think(edict_t* bolt) {
+
+	VectorInverse(bolt->velocity);
+	bolt->think = G_FreeEdict;
+	bolt->nextthink = level.time + 1;
+	return;
+}
+
+// EDEL END
+
 /*
 ============
 G_TouchTriggers

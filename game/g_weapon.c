@@ -322,7 +322,7 @@ void blaster_touch (edict_t *self, edict_t *other, cplane_t *plane, csurface_t *
 	if (other->takedamage)
 	{
 		if (self->spawnflags & 1)
-			mod = MOD_HYPERBLASTER;
+			mod = MOD_HYPERBLASTER; 
 		else
 			mod = MOD_BLASTER;
 		T_Damage (other, self, self->owner, self->velocity, self->s.origin, plane->normal, self->dmg, 1, DAMAGE_ENERGY, mod);
@@ -356,10 +356,14 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	// (blaster/hyperblaster shots), the player won't be solid clipped against
 	// the object.  Right now trying to run into a firing hyperblaster
 	// is very jerky since you are predicted 'against' the shots.
+
+	//start[0] += dir[0];
+	//start[1] += dir[1];
+
 	VectorCopy (start, bolt->s.origin); // Edel no 1.75
 	VectorCopy (start, bolt->s.old_origin); // Edel no 1.75
 	vectoangles (dir, bolt->s.angles); 
-	VectorScale (dir, speed/2 , bolt->velocity); // EDEL speed -> speed/2
+	VectorScale (dir, speed/3 , bolt->velocity); // EDEL speed -> speed/2
 	bolt->movetype = MOVETYPE_FLYMISSILE;
 	bolt->clipmask = MASK_SHOT;
 	bolt->solid = SOLID_BBOX;
@@ -370,12 +374,13 @@ void fire_blaster (edict_t *self, vec3_t start, vec3_t dir, int damage, int spee
 	bolt->s.sound = gi.soundindex ("misc/lasfly.wav");
 	bolt->owner = self;
 	bolt->touch = blaster_touch;
-	bolt->nextthink = level.time + 2;
-	bolt->think = G_FreeEdict;
+	bolt->nextthink = level.time + 0.17; // EDEL 2 -> 0.18
+	bolt->think = G_FreeEdict;//bolt_think(bolt);			// EDEL G_FreeEdict;
 	bolt->dmg = damage;
 	bolt->classname = "bolt";
 	if (hyper)
-		bolt->spawnflags = 1;
+		//bolt->spawnflags = 1;
+		bolt->nextthink = level.time + 0.27;
 	gi.linkentity (bolt);
 
 	if (self->client)
@@ -419,10 +424,10 @@ static void Grenade_Explode (edict_t *ent)
 			mod = MOD_HANDGRENADE;
 		else
 			mod = MOD_GRENADE;
-		T_Damage (ent->enemy, ent, ent->owner, dir, ent->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod);
+		T_Damage (ent->enemy, ent, ent->owner, dir, ent->s.origin, vec3_origin, (int)points, (int)points, DAMAGE_RADIUS, mod); // EDEL DAMAGE_RADIUS
 	}
 
-	if (ent->spawnflags & 2)
+	if (ent->spawnflags & 2) 
 		mod = MOD_HELD_GRENADE;
 	else if (ent->spawnflags & 1)
 		mod = MOD_HG_SPLASH;
@@ -434,15 +439,19 @@ static void Grenade_Explode (edict_t *ent)
 	gi.WriteByte (svc_temp_entity);
 	if (ent->waterlevel)
 	{
-		if (ent->groundentity)
-			gi.WriteByte (TE_GRENADE_EXPLOSION_WATER);
+		if (ent->groundentity) 
+		{
+			gi.WriteByte (TE_GRENADE_EXPLOSION_WATER); //EDEL
+		}	
 		else
 			gi.WriteByte (TE_ROCKET_EXPLOSION_WATER);
 	}
 	else
 	{
 		if (ent->groundentity)
-			gi.WriteByte (TE_GRENADE_EXPLOSION);
+		{
+			gi.WriteByte (TE_GRENADE_EXPLOSION); // EDEL
+		}
 		else
 			gi.WriteByte (TE_ROCKET_EXPLOSION);
 	}
@@ -451,8 +460,7 @@ static void Grenade_Explode (edict_t *ent)
 
 	G_FreeEdict (ent);
 }
-
-static void Grenade_Touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
+static void Grenade_Touch(edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *surf)
 {
 	if (other == ent->owner)
 		return;
@@ -506,7 +514,7 @@ void fire_grenade (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int s
 	VectorClear (grenade->maxs);
 	grenade->s.modelindex = gi.modelindex ("models/objects/grenade/tris.md2");
 	grenade->owner = self;
-	grenade->touch = Grenade_Touch;
+	grenade->touch = blaster_touch;// Grenade_Touch; //EDEL
 	grenade->nextthink = level.time + timer;
 	grenade->think = Grenade_Explode;
 	grenade->dmg = damage;
@@ -539,7 +547,7 @@ void fire_grenade2 (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int 
 	VectorClear (grenade->maxs);
 	grenade->s.modelindex = gi.modelindex ("models/objects/grenade2/tris.md2");
 	grenade->owner = self;
-	grenade->touch = Grenade_Touch;
+	grenade->touch = blaster_touch; // Grenade_Touch; //EDEL
 	grenade->nextthink = level.time + timer;
 	grenade->think = Grenade_Explode;
 	grenade->dmg = damage;

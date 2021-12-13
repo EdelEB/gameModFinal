@@ -864,8 +864,11 @@ void Weapon_Blaster (edict_t *ent)
 	Weapon_Generic (ent, 4, 8, 52, 55, pause_frames, fire_frames, Weapon_Blaster_Fire);
 }
 
+void Weapon_HyperBlaster_Fire(edict_t* ent) { //EDEL 
+	Weapon_Blaster_Fire(ent);
+}
 
-void Weapon_HyperBlaster_Fire (edict_t *ent)
+void Weapon_HyperBlaster_Fired (edict_t *ent) //EDEL Fire -> Fired
 {
 	float	rotation;
 	vec3_t	offset;
@@ -937,9 +940,10 @@ void Weapon_HyperBlaster_Fire (edict_t *ent)
 void Weapon_HyperBlaster (edict_t *ent)
 {
 	static int	pause_frames[]	= {0};
-	static int	fire_frames[]	= {6, 7, 8, 9, 10, 11, 0};
-
-	Weapon_Generic (ent, 5, 20, 49, 53, pause_frames, fire_frames, Weapon_HyperBlaster_Fire);
+	static int	fire_frames[]	= { 6, 0 };//{6, 7, 8, 9, 10, 11, 0}; //EDEL removes automatic fire
+	
+	Weapon_Generic(ent, 4, 8, 52, 55, pause_frames, fire_frames, Weapon_Blaster_Fire);
+	//Weapon_Generic (ent, 5, 20, 49, 53, pause_frames, fire_frames, Weapon_HyperBlaster_Fire); //EDEL
 }
 
 /*
